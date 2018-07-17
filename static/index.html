@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<form action="/processing" method="POST">
+		Ваш Возраст: <input type="number" name="age" value="18" required><br>
+		Тип занятости: 
+		<select name="work_type">
+			<option selected="selected" value="full_day">Полный день</option>
+			<option value="free_day">Свободный график</option>
+		</select>
+		<br>
+		Суммарно какое количество часов в день Вы считаете себя наиболее продуктивным: <input type="number" name="active_work_hours" value="6" required><br>
+		Пожалуйста, оцените свою продуктивность во время программирования. 0 баллов крайнее левое положение ползунка, 5 баллов крайнее правое положение ползунка.<br>
+		Баллы соответствуют следующим значениям:<br>
+		0 баллов - не могу или не хочу работать.<br>
+		5 баллов - ощущение максимальноый продуктивности.<br>
+		<br>
+		Промежуточные значения должны соответствовать Вашему чувственному ощущению. 
+		<br>
+		
+		<div>
+			<div style="float: left">
+				00 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				01 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				02 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				03 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				04 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				05 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				06 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				07 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				08 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				09 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				10 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				11 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+			</div>
+			<div>
+				12 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				13 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				14 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				15 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				16 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				17 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				18 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				19 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				20 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				21 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				22 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+				23 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
+			</div>
+		</div>
+		
+
+		Если Вы хотите получить копию статьи, то укажите Вашу почту:
+		<input type="email" name="email" placeholdier="Ваш email"><br>
+		
+		<input type="submit" name="name" value="Отправить">
+	</form>
+</body>
+</html>
