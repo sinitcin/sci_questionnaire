@@ -11,7 +11,12 @@
 	<script type="text/javascript" src="jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.cursor.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.highlighter.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>	
+	<script type="text/javascript" src="jqplot/plugins/jqplot.logAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasTextRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisTickRenderer.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
 	<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />	
 </head>
@@ -21,16 +26,25 @@
 				<!-- Левый блок -->
 				<div class="column">
 					<p>
-						Все собранные данные будут использованы как обезличенные и только для публикации в журнале входящем в список научных журналов ВАК.
-						<br style="margin-top: 20px">
-						
+						Пожалуйста, оцените свою продуктивность во время программирования от 0 баллов до 5 баллов*.
+						Баллы соответствуют следующим значениям:<br>
+						<ul>
+							<li><b>0 баллов</b> - не могу или не хочу работать.</li>
+							<li><b>5 баллов</b> - ощущение максимальной продуктивности.</li>
+							<li><b>Промежуточные значения</b> - должны соответствовать Вашему чувственному ощущению.</li>
+						</ul>
 
 					</p>
 					<br style="margin-top: 80px">
-					<p>
-						Исходный код данного сайта расположен на: <a href="https://github.com/sinitcin/sci_questionnaire">github</a><br>
-						В опросе уже приняли участие: {} человек. 
-					</p>                
+					<p style="font-size: 0.8em; text-align: left">
+						* Все собранные данные будут использованы как обезличенные и только для публикации в журнале входящем в список научных журналов ВАК.
+					</p>
+					<p style="font-size: 0.8em; text-align: left">
+						** Исходный код данного сайта расположен на: <a href="https://github.com/sinitcin/sci_questionnaire">github</a><br>
+					</p>
+					<p style="font-size: 0.8em; text-align: left">
+						*** В опросе уже приняли участие: {} человек. 
+					</p>
 				</div>
 				<!-- Конец левого блока -->
 				<!-- Правый блок -->
@@ -45,50 +59,9 @@
 						</select>
 						<input type="number"class="textbox" name="active_work_hours" min="0" max="24" placeholder="Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:" required/>
 						<input type="email" class="textbox" name="emailaddr" placeholder="Если Вы хотите получить копию статьи, то укажите Вашу почту:"/>
-			
-						Пожалуйста, оцените свою продуктивность во время программирования. 0 баллов крайнее левое положение ползунка, 5 баллов крайнее правое положение ползунка.
-						Баллы соответствуют следующим значениям:<br>
-						<ul>
-							<li><b style="color: #3B7BAD">0 баллов</b> - не могу или не хочу работать.</li>
-							<li><b style="color: #3B7BAD">5 баллов</b> - ощущение максимальной продуктивности.</li>
-							<li><b style="color: #3B7BAD">Промежуточные значения</b> - должны соответствовать Вашему чувственному ощущению.</li>
-						</ul>
 
-						<div id="chart1" style="height: 500px; width: 100%;"></div>
+						<div id="chart1" style="height: 200px; width: 100%; margin-left: 5px; margin-bottom: 5px"></div>
 
-						<div>
-							<div class="leftpane">
-								00 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								01 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								02 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								03 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								04 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								05 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								06 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								07 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								08 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								09 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								10 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								11 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-							</div>
-							<div class="rightpane">
-								12 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								13 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								14 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								15 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								16 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								17 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								18 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								19 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								20 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								21 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								22 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-								23 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
-							</div>
-						</div>
-						<br>
-				
-						
 						<input type="submit" name="submit" class="button" value="Отправить">
 					</form>
 				</div>
@@ -102,38 +75,54 @@
 				debugger
 				$.jqplot.config.enablePlugins = true;
 			
-				s1 = [['23-May-08',1],['24-May-08',4],['25-May-08',2],['26-May-08', 6]];
+				s1 = [	['00:00',0],['01:00',0],['02:00',0],['03:00',0],['04:00',0],['05:00',0],['06:00',0],
+						['07:00',1],['08:00',2],['09:00',3],['10:00',4],['11:00',5],['12:00',5],['13:00',5],
+						['14:00',5],['15:00',5],['16:00',5],['17:00',4],['18:00',3],['19:00',2],['20:00',1],
+						['21:00',0],['22:00',0],['23:00',0]];
 			
 				window.plot1 = $.jqplot('chart1',[s1],{
-				title: 'Highlighting, Dragging, Cursor and Trend Line',
 				axes: {
 					xaxis: {
-						renderer: $.jqplot.DateAxisRenderer,
 						tickOptions: {
-							formatString: '%#m/%#d/%y'
+							formatString: '%H:%M',
+							angle: -30
 						},
-						numberTicks: 4
+						tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+						labelOptions: {
+							fontFamily:'Helvetica',
+							fontSize: '14pt'
+						},
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						renderer: $.jqplot.DateAxisRenderer,
+						numberTicks: 12
 					},
 					yaxis: {
 						tickOptions: {
-							formatString: '$%.2f'
-						}
+							formatString: '%d',
+							angle: 30
+						},
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+						numberTicks: 5,
+						min:-0.2,
+						max:5.2
+					}, 
+					seriesDefaults: { 
+						showMarker: false,
+						pointLabels: { show: true } 
 					}
 				},
 				highlighter: {
 					sizeAdjust: 10,
 					tooltipLocation: 'n',
 					tooltipAxes: 'y',
-					tooltipFormatString: '<b><i><span style="color:red;">hello</span></i></b> %.2f',
+					tooltipFormatString: '<b><i><span style="color:red;">Значение: </span></i></b> %d',
 					useAxesFormatters: false
 				},
 				cursor: {
 					show: true
 				}
-				});		
-
-				
-				window.plot1.Trendline.show = false;		
+				});
 			});
 		</script>
 

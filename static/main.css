@@ -64,11 +64,16 @@ a {
 
 .column p {
 	font-weight: 300;
-	font-size: 1.5em;
+	font-size: 1em;
 	padding: 0;
 	margin: 0;
 	text-align: right;
 	line-height: 1.5;
+}
+
+.footnote {
+	font-size: 0.8em; 
+	text-align: left;
 }
 
 .nav-top {
