@@ -4,6 +4,17 @@
 	<meta charset="utf-8">
 	<title></title>	
 	<link href="main.css" rel="stylesheet">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jqplot/jquery.jqplot.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.barRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.cursor.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.highlighter.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.trendline.js"></script>
+	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
+	<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />	
 </head>
 <body>
 		<div class="container">
@@ -43,7 +54,9 @@
 							<li><b style="color: #3B7BAD">5 баллов</b> - ощущение максимальной продуктивности.</li>
 							<li><b style="color: #3B7BAD">Промежуточные значения</b> - должны соответствовать Вашему чувственному ощущению.</li>
 						</ul>
-						
+
+						<div id="chart1" style="height: 500px; width: 100%;"></div>
+
 						<div>
 							<div class="leftpane">
 								00 ч. : <input type="range" min="0" max="5" name="range" value="0" step="1" id="slider"><br> 
@@ -83,5 +96,43 @@
 				<!-- Конец правого блока -->
 			</div>
 		</div>
+
+		<script language="javascript" type="text/javascript">
+			$(document).ready(function () {
+				debugger
+				$.jqplot.config.enablePlugins = true;
+			
+				s1 = [['23-May-08',1],['24-May-08',4],['25-May-08',2],['26-May-08', 6]];
+			
+				plot1 = $.jqplot('chart1',[s1],{
+				title: 'Highlighting, Dragging, Cursor and Trend Line',
+				axes: {
+					xaxis: {
+						renderer: $.jqplot.DateAxisRenderer,
+						tickOptions: {
+							formatString: '%#m/%#d/%y'
+						},
+						numberTicks: 4
+					},
+					yaxis: {
+						tickOptions: {
+							formatString: '$%.2f'
+						}
+					}
+				},
+				highlighter: {
+					sizeAdjust: 10,
+					tooltipLocation: 'n',
+					tooltipAxes: 'y',
+					tooltipFormatString: '<b><i><span style="color:red;">hello</span></i></b> %.2f',
+					useAxesFormatters: false
+				},
+				cursor: {
+					show: true
+				}
+				});
+			});
+		</script>
+
 </body>
 </html>
