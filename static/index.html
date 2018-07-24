@@ -12,7 +12,6 @@
 	<script type="text/javascript" src="jqplot/plugins/jqplot.cursor.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.highlighter.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.trendline.js"></script>
 	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
 	<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />	
 </head>
@@ -98,13 +97,14 @@
 		</div>
 
 		<script language="javascript" type="text/javascript">
-			$(document).ready(function () {
+
+		    $(document).ready(function () {  
 				debugger
 				$.jqplot.config.enablePlugins = true;
 			
 				s1 = [['23-May-08',1],['24-May-08',4],['25-May-08',2],['26-May-08', 6]];
 			
-				plot1 = $.jqplot('chart1',[s1],{
+				window.plot1 = $.jqplot('chart1',[s1],{
 				title: 'Highlighting, Dragging, Cursor and Trend Line',
 				axes: {
 					xaxis: {
@@ -130,7 +130,10 @@
 				cursor: {
 					show: true
 				}
-				});
+				});		
+
+				
+				window.plot1.Trendline.show = false;		
 			});
 		</script>
 
