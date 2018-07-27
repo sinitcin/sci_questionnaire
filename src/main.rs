@@ -6,23 +6,30 @@ extern crate rocket;
 use std::io;
 use std::path::{Path, PathBuf};
 
+#[allow(unused_imports)]
 use rocket::request::{Form, FromFormValue};
+use rocket::response::Redirect;
 use rocket::response::NamedFile;
 use rocket::http::RawStr;
 
 #[derive(Debug, FromForm)]
 struct FormInput<'r> {
-    checkbox: bool,
-    password: &'r RawStr,
+    age: u8,
+    work_type: &'r RawStr,
+    active_work_hours: u8,
+    emailaddr: &'r RawStr,
 }
 
-#[post("/processing", data="<sink>")]
-fn processing<'r>(sink: Result<Form<'r, FormInput<'r>>, Option<String>>) -> String {
-    match sink {
-        Ok(form) => format!("{:?}", form.get()),
-        Err(Some(f)) => format!("Invalid form input: {}", f),
-        Err(None) => format!("Form input was invalid UTF8."),
+#[post("/processing", data="<param_form>")]
+fn processing<'r>(param_form: Form<'r, FormInput<'r>>) -> Result<Redirect, String> {
+
+    let param = param_form.get();
+    if let Err(e) = param.age {
+        return Err(format!("Age is invalid: {}", e));
     }
+
+    println!("{}", param.age);
+    Ok(Redirect::to("/thanks"))
 }
 
 #[get("/")]
