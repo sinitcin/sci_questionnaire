@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title></title>	
-	<link href="main.css" rel="stylesheet">
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jqplot/jquery.jqplot.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
@@ -17,8 +16,8 @@
 	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisTickRenderer.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
-	<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />	
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />	
 </head>
 <body>
 		<div class="container">
@@ -33,7 +32,6 @@
 							<li><b>5 баллов</b> - ощущение максимальной продуктивности.</li>
 							<li><b>Промежуточные значения</b> - должны соответствовать Вашему чувственному ощущению.</li>
 						</ul>
-
 					</p>
 					<br style="margin-top: 80px">
 					<p style="font-size: 0.8em; text-align: left">
@@ -49,20 +47,19 @@
 				<!-- Конец левого блока -->
 				<!-- Правый блок -->
 				<div class="column">
-					<form action="/processing" method="GET">
+					<form action="/processing" id="main_form" method="post">
 						<input type="number" class="textbox" name="age" value="" min="0" max="120" placeholder="Ваш Возраст:" required/>
-						<input type="text" class="textbox" name="specialization" placeholder="Ваша должность:" required/>
+						<input type="text" class="textbox" name="specialization" placeholder="Ваша должность:" required/>						
 						<select name="work_type" class="textbox" style="color:gray" onchange="this.style.color='black'" required/>
 							<option value="" style="display:none" selected="selected">Выберите тип занятости:</option>
 							<option value="full_day">Полный день</option>
 							<option value="free_day">Свободный график</option>
 						</select>
-						<input type="number"class="textbox" name="active_work_hours" min="0" max="24" placeholder="Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:" required/>
-						<input type="email" class="textbox" name="emailaddr" placeholder="Если Вы хотите получить копию статьи, то укажите Вашу почту:"/>
-
+						<input type="number" class="textbox" name="active_work_hours" min="0" max="24" placeholder="Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:" required/>				
+						<input type="email" class="textbox" name="email" placeholder="Если Вы хотите получить копию статьи, то укажите Вашу почту:"/>
+						<input type="hidden" name="points" id="points"/>
 						<div id="chart1" style="height: 200px; width: 100%; margin-left: 5px; margin-bottom: 5px"></div>
-
-						<input type="submit" name="submit" class="button" value="Отправить">
+						<input type="submit" name="submit" class="button" value="Отправить"/>
 					</form>
 				</div>
 				<!-- Конец правого блока -->
@@ -75,10 +72,12 @@
 				debugger
 				$.jqplot.config.enablePlugins = true;
 			
-				s1 = [	['00:00',0],['01:00',0],['02:00',0],['03:00',0],['04:00',0],['05:00',0],['06:00',0],
-						['07:00',1],['08:00',2],['09:00',3],['10:00',4],['11:00',5],['12:00',5],['13:00',5],
-						['14:00',5],['15:00',5],['16:00',5],['17:00',4],['18:00',3],['19:00',2],['20:00',1],
-						['21:00',0],['22:00',0],['23:00',0]];
+				window.s1 = [	
+							['00:00',0],['01:00',0],['02:00',0],['03:00',0],['04:00',0],['05:00',0],['06:00',0],
+							['07:00',1],['08:00',2],['09:00',3],['10:00',4],['11:00',5],['12:00',5],['13:00',5],
+							['14:00',5],['15:00',5],['16:00',5],['17:00',4],['18:00',3],['19:00',2],['20:00',1],
+							['21:00',0],['22:00',0],['23:00',0]
+							];
 			
 				window.plot1 = $.jqplot('chart1',[s1],{
 				axes: {
@@ -123,6 +122,10 @@
 					show: true
 				}
 				});
+			});
+
+			$('#main_form').submit(function () {
+				$("#points").val(JSON.stringify(window.s1));
 			});
 		</script>
 
