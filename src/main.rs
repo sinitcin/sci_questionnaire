@@ -49,12 +49,10 @@ impl<'a> From<&'a FormInput<'a>> for DataRow<'a> {
                     .as_u64()
                     .expect("Не смог получить данные из массива..."),
             );
-        };
-        let spec = raw_data.specialization.percent_decode();
-        let spec = &'a spec.expect("Не смог преобразовать поле `специальность` в UTF-8");
+        }
         DataRow {
             age: raw_data.age,
-            specialization: spec,
+            specialization: raw_data.specialization,
             work_type: wtype,
             active_work_hours: raw_data.active_work_hours,
             email: raw_data.email,
@@ -87,7 +85,16 @@ fn files(file: PathBuf) -> Option<NamedFile> {
 #[post("/processing", data = "<param_form>")]
 fn processing<'r>(param_form: Form<'r, FormInput<'r>>) -> Result<Redirect, String> {
     let param = param_form.get();
-    let data = DataRow::from(param);
+    let decoded_mail = &*param.email.percent_decode().expect("");
+    let decoded_mail = &RawStr::from_str(decoded_mail);
+    let decoded_specialization = &*param.specialization.percent_decode().expect("");
+    let decoded_specialization = &RawStr::from_str(decoded_specialization);
+    let param2 = &FormInput {
+        specialization: decoded_specialization,
+        email: decoded_mail,
+        ..*param
+    };
+    let data = DataRow::from(param2);
     database::store_row(data);
     Ok(Redirect::to("/thanks"))
 }
@@ -113,7 +120,7 @@ fn main() {
 pub mod database {
 
     extern crate sqlite;
-    use self::sqlite::{Connection, State, Type, Value};
+    use self::sqlite::State;
     use super::DataRow;
     use std::fs;
 
@@ -121,26 +128,28 @@ pub mod database {
         let mut avail = false;
         if let Ok(metadata) = fs::metadata("database.sqlite") {
             let file_type = metadata.file_type();
-            if (file_type.is_file()) {
+            if file_type.is_file() {
                 // Файл уже есть
                 avail = true;
             }
         }
         let connection = ok!(sqlite::open("database.sqlite"));
-        if (!avail) {
+        if !avail {
             ok!(connection.execute(
-                "CREATE TABLE opinions (age INTEGER, specialization TEXT, work_type INTEGER);"
+                "CREATE TABLE opinions (age INTEGER, specialization TEXT, work_type INTEGER, active_work_hours INTEGER, email TEXT);"
             ));
         }
     }
 
     pub fn store_row(data: DataRow) {
         let connection = ok!(sqlite::open("database.sqlite"));
-        let statement = "INSERT INTO opinions (age, specialization, work_type) VALUES (?, ?, ?)";
+        let statement = "INSERT INTO opinions (age, specialization, work_type, active_work_hours, email) VALUES (?, ?, ?, ?, ?)";
         let mut statement = ok!(connection.prepare(statement));
         ok!(statement.bind(1, data.age as i64));
         ok!(statement.bind(2, data.specialization));
         ok!(statement.bind(3, data.work_type as i64));
+        ok!(statement.bind(4, data.active_work_hours as i64));
+        ok!(statement.bind(5, data.email));
         assert_eq!(ok!(statement.next()), State::Done);
     }
 }
