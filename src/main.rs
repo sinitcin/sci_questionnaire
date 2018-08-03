@@ -119,16 +119,18 @@ pub mod database {
     use super::DataRow;
     use std::fs;
 
+    static DBPATH: &'static str = "database.sqlite";
+
     pub fn create_or_open() {
         let mut avail = false;
-        if let Ok(metadata) = fs::metadata("database.sqlite") {
+        if let Ok(metadata) = fs::metadata(DBPATH) {
             let file_type = metadata.file_type();
             if file_type.is_file() {
                 // Файл уже есть
                 avail = true;
             }
         }
-        let connection = ok!(sqlite::open("database.sqlite"));
+        let connection = ok!(sqlite::open(DBPATH));
         if !avail {
             ok!(connection.execute(
                 "CREATE TABLE opinions (age INTEGER, specialization TEXT, work_type INTEGER, active_work_hours INTEGER, email TEXT, points TEXT);"
