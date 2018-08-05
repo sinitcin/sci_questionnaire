@@ -100,9 +100,9 @@ fn files(file: PathBuf) -> Option<NamedFile> {
 #[post("/processing", data = "<param_form>")]
 fn processing<'r>(param_form: Form<'r, FormInput<'r>>) -> Result<Redirect, String> {
     let param = param_form.get();
-    let decoded_mail = &*param.email.percent_decode().expect("");
+    let decoded_mail = &*param.email.percent_decode().expect("Не смог расшифровать <email> из запроса");
     let decoded_mail = &RawStr::from_str(decoded_mail);
-    let decoded_specialization = &*param.specialization.percent_decode().expect("");
+    let decoded_specialization = &*param.specialization.percent_decode().expect("Не смог расшифровать <специальность> из запроса");
     let decoded_specialization = &RawStr::from_str(decoded_specialization);
     let decoded_points = &*param.points.percent_decode().expect("");
     let decoded_points = &RawStr::from_str(decoded_points);
@@ -143,11 +143,12 @@ pub mod database {
     use super::DataRow;
     use std::path::Path;
 
+    /// Путь к БД 
     fn get_db_path() -> String {
         if cfg!(windows) {
             "database.sqlite".to_owned()
         } else {
-            "/usr/questionnaire/database.sqlite".to_owned()
+            "/storage/database.sqlite".to_owned()
         }
     }
 
@@ -178,11 +179,8 @@ pub mod database {
     /// Количество людей участвовавших в опросе
     pub fn number_of_participants() -> i64 {
         let connection = ok!(sqlite::open(get_db_path()));
-        let mut statement = connection
-            .prepare("SELECT COUNT(*) FROM opinions")
-            .unwrap();
-
-        let _ = statement.next().unwrap(); 
-        statement.read::<i64>(0).unwrap()
+        let mut statement = ok!(connection.prepare("SELECT COUNT(*) FROM opinions"));
+        let _ = ok!(statement.next()); 
+        ok!(statement.read::<i64>(0))
     }
 }
