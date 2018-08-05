@@ -97,6 +97,16 @@ fn files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("static/").join(file)).ok()
 }
 
+#[get("/jqplot/<file..>")]
+fn jqplot(file: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("static/jqplot/").join(file)).ok()
+}
+
+#[get("/jqplot/plugins/<file..>")]
+fn plugins(file: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("static/jqplot/plugins/").join(file)).ok()
+}
+
 #[post("/processing", data = "<param_form>")]
 fn processing<'r>(param_form: Form<'r, FormInput<'r>>) -> Result<Redirect, String> {
     let param = param_form.get();
@@ -130,7 +140,7 @@ fn not_found(_req: &Request) -> io::Result<NamedFile> {
 fn main() {
     database::create();
     rocket::ignite()
-        .mount("/", routes![index, files, processing, thanks])
+        .mount("/", routes![index, files, jqplot, plugins, processing, thanks])
         .attach(Template::fairing())
         .catch(catchers![not_found])
         .launch();
