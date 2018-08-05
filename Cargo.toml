@@ -6,6 +6,11 @@ authors = ["Антон Синицын <antony@email.su>"]
 [dependencies]
 rocket = "0.3.*"
 rocket_codegen = "0.3.*"
-rocket_contrib = "0.3.*"
+serde = "*"
+serde_derive = "*"
 serde_json = "*"
 sqlite = "*"
+
+[dependencies.rocket_contrib]
+features = ["handlebars_templates"]
+version = "0.3.*"

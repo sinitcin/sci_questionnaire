@@ -2,7 +2,10 @@
 #![plugin(rocket_codegen)]
 
 extern crate rocket;
+extern crate rocket_contrib;
 extern crate serde_json;
+#[macro_use] 
+extern crate serde_derive;
 
 use std::io;
 use std::path::{Path, PathBuf};
@@ -14,6 +17,13 @@ use rocket::http::RawStr;
 use rocket::request::{Form, FromFormValue, Request};
 use rocket::response::NamedFile;
 use rocket::response::Redirect;
+use rocket_contrib::Template;
+
+
+#[derive(Serialize)]
+struct TemplateContext {
+    participants: String,
+}
 
 enum WorkType {
     FullDay,
@@ -65,8 +75,21 @@ struct FormInput<'r> {
 }
 
 #[get("/")]
-fn index() -> io::Result<NamedFile> {
-    NamedFile::open("static/index.html")
+fn index() -> Template {
+
+    let count = format!("{}", database::number_of_participants());
+    let end_with = match count.chars().last() {
+        Some('2') | 
+        Some('3') | 
+        Some('4') => "человека",
+        _ => "человек",
+    };
+
+    let context = TemplateContext {
+        participants: format!("{} {}", count, end_with) 
+    };
+
+    Template::render("index", &context)
 }
 
 #[get("/<file..>")]
@@ -105,9 +128,10 @@ fn not_found(_req: &Request) -> io::Result<NamedFile> {
 }
 
 fn main() {
-    database::create_or_open();
+    database::create();
     rocket::ignite()
         .mount("/", routes![index, files, processing, thanks])
+        .attach(Template::fairing())
         .catch(catchers![not_found])
         .launch();
 }
@@ -117,29 +141,29 @@ pub mod database {
     extern crate sqlite;
     use self::sqlite::State;
     use super::DataRow;
-    use std::fs;
+    use std::path::Path;
 
-    static DBPATH: &'static str = "database.sqlite";
-
-    pub fn create_or_open() {
-        let mut avail = false;
-        if let Ok(metadata) = fs::metadata(DBPATH) {
-            let file_type = metadata.file_type();
-            if file_type.is_file() {
-                // Файл уже есть
-                avail = true;
-            }
+    fn get_db_path() -> String {
+        if cfg!(windows) {
+            "database.sqlite".to_owned()
+        } else {
+            "/usr/questionnaire/database.sqlite".to_owned()
         }
-        let connection = ok!(sqlite::open(DBPATH));
-        if !avail {
+    }
+
+    /// Создание новой БД
+    pub fn create() {
+        if !Path::new(&get_db_path()).exists() {
+            let connection = ok!(sqlite::open(get_db_path()));
             ok!(connection.execute(
                 "CREATE TABLE opinions (age INTEGER, specialization TEXT, work_type INTEGER, active_work_hours INTEGER, email TEXT, points TEXT);"
             ));
         }
     }
 
+    /// Записать в БД данные нового человека
     pub fn store_row(data: DataRow) {
-        let connection = ok!(sqlite::open("database.sqlite"));
+        let connection = ok!(sqlite::open(get_db_path()));
         let statement = "INSERT INTO opinions (age, specialization, work_type, active_work_hours, email, points) VALUES (?, ?, ?, ?, ?, ?)";
         let mut statement = ok!(connection.prepare(statement));
         ok!(statement.bind(1, data.age as i64));
@@ -149,5 +173,16 @@ pub mod database {
         ok!(statement.bind(5, data.email));
         ok!(statement.bind(6, data.points));
         assert_eq!(ok!(statement.next()), State::Done);
+    }
+
+    /// Количество людей участвовавших в опросе
+    pub fn number_of_participants() -> i64 {
+        let connection = ok!(sqlite::open(get_db_path()));
+        let mut statement = connection
+            .prepare("SELECT COUNT(*) FROM opinions")
+            .unwrap();
+
+        let _ = statement.next().unwrap(); 
+        statement.read::<i64>(0).unwrap()
     }
 }
