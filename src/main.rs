@@ -177,10 +177,10 @@ pub mod database {
     }
 
     /// Количество людей участвовавших в опросе
-    pub fn number_of_participants() -> i64 {
+    pub fn number_of_participants() -> u64 {
         let connection = ok!(sqlite::open(get_db_path()));
         let mut statement = ok!(connection.prepare("SELECT COUNT(*) FROM opinions"));
         let _ = ok!(statement.next()); 
-        ok!(statement.read::<i64>(0))
+        ok!(statement.read::<i64>(0)) as u64
     }
 }
