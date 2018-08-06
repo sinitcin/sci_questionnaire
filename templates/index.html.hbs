@@ -4,20 +4,20 @@
 	<meta charset="utf-8">
 	<title></title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="jqplot/jquery.jqplot.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.barRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.cursor.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.highlighter.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.logAxisRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasTextRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
-	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisTickRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/jquery.jqplot.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.barRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.cursor.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.highlighter.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.dragable.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.logAxisRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.canvasTextRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+	<script type="text/javascript" src="static/jqplot/plugins/jqplot.canvasAxisTickRenderer.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="main.css" />
-	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
+	<link rel="stylesheet" type="text/css" href="static/main.css" />
+	<link rel="stylesheet" type="text/css" href="static/jqplot/jquery.jqplot.css" />
 </head>
 <body>
 		<div class="container">
@@ -58,7 +58,9 @@
 						<input type="number" class="textbox" name="active_work_hours" min="0" max="24" placeholder="Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:" required/>
 						<input type="email" class="textbox" name="email" placeholder="Если Вы хотите получить копию статьи, то укажите Вашу почту:"/>
 						<input type="hidden" name="points" id="points"/>
-						<div id="chart1" style="height: 200px; width: 100%; margin-left: 5px; margin-bottom: 5px"></div>
+						<span style="color:red;padding-bottom:20px;font-size: 0.8em"> &larr; График нужно заполнить! Читайте текст слева</span>
+						<br>
+						<div id="chart1" style="height: 220px; width: 100%; margin-left: 5px; margin-bottom: 5px; margin-top: 5px;"></div>
 						<input type="submit" name="submit" class="button" value="Отправить"/>
 					</form>
 				</div>
