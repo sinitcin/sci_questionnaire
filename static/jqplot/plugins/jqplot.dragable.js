@@ -51,6 +51,7 @@
         // Constrain dragging motion to an axis or to none.
         // Allowable values are 'none', 'x', 'y'
         this.constrainTo = 'none';  // 'x', 'y', or 'none';
+		this.stickyY = false;
         $.extend(true, this, options);
     };
     
@@ -127,7 +128,7 @@
     
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (plot.plugins.dragable.dragCanvas.isDragging) {
-            var dc = plot.plugins.dragable.dragCanvas;
+			var dc = plot.plugins.dragable.dragCanvas;
             var dp = dc._neighbor;
             var s = plot.series[dp.seriesIndex];
             var drag = s.plugins.dragable;
@@ -136,7 +137,9 @@
             // compute the new grid position with any constraints.
             var x = (drag.constrainTo == 'y') ? dp.gridData[0] : gridpos.x;
             var y = (drag.constrainTo == 'x') ? dp.gridData[1] : gridpos.y;
-            
+			
+			//y = (plot.plugins.dragable.stickyY) ? y : Math.round(y);
+			
             // compute data values for any listeners.
             var xu = s._xaxis.series_p2u(x);
             var yu = s._yaxis.series_p2u(y);
@@ -215,8 +218,9 @@
             // var x = datapos[s.xaxis];
             // var y = datapos[s.yaxis];
             s.data[dp.pointIndex][0] = x;
-            s.data[dp.pointIndex][1] = y;
-            plot.drawSeries({preventJqPlotSeriesDrawTrigger:true}, dp.seriesIndex);
+			s.data[dp.pointIndex][1] = Math.round(y); // (plot.plugins.dragable.stickyY) ? Math.round(y) : y;
+
+			plot.drawSeries({preventJqPlotSeriesDrawTrigger:true}, dp.seriesIndex);
             dc._neighbor = null;
             ev.target.style.cursor = dc._cursors.pop();
             plot.target.trigger('jqplotDragStop', [gridpos, datapos]);
