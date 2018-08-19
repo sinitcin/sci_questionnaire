@@ -4,13 +4,14 @@ version = "0.1.0"
 authors = ["Антон Синицын <antony@email.su>"]
 
 [dependencies]
-rocket = "0.3.*"
-rocket_codegen = "0.3.*"
+rocket = { git = "https://github.com/SergioBenitez/Rocket" }
+rocket_codegen = { version = "0.3.15", git = "https://github.com/SergioBenitez/Rocket" }
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
 sqlite = "*"
 
 [dependencies.rocket_contrib]
-features = ["handlebars_templates"]
 version = "0.3.*"
+default-features = false
+features = ["handlebars_templates"]
