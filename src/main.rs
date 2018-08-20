@@ -1,6 +1,7 @@
 #![feature(plugin, custom_derive, decl_macro)]
 #![plugin(rocket_codegen)]
 
+#[macro_use] 
 extern crate rocket;
 extern crate rocket_contrib;
 extern crate serde_json;
