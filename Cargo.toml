@@ -5,13 +5,13 @@ authors = ["Антон Синицын <antony@email.su>"]
 
 [dependencies]
 rocket = { git = "https://github.com/SergioBenitez/Rocket" }
-rocket_codegen = { version = "0.3.15", git = "https://github.com/SergioBenitez/Rocket" }
+rocket_codegen = { git = "https://github.com/SergioBenitez/Rocket" }
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
 sqlite = "*"
 
 [dependencies.rocket_contrib]
-version = "0.3.*"
 default-features = false
 features = ["handlebars_templates"]
+git = "https://github.com/SergioBenitez/Rocket"
