@@ -11,3 +11,4 @@ Cargo.lock
 database.sqlite
 .vscode
 /templates/static
+build.*
