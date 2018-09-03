@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>Опрос</title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jqplot/jquery.jqplot.js"></script>
 	<script type="text/javascript" src="jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
@@ -22,50 +22,42 @@
 <body>
 		<div class="container">
 			<div class="main clearfix">
-				<!-- Левый блок -->
-				<div class="column">
-					<p>
-						По оси абсцисс (X) указано время в формате "Часы:Минуты" и 
-						установлены 24 точки, которые соответствуют каждому часу в сутках. Каждую точку можно двигать по оси ординат (Y). Во всплывающей подсказке будет 
-						указано, какому количеству баллов равняется выбранная позиция точки.
-						<br style="margin-bottom: 40px">
-						Пожалуйста, оцените свою продуктивность во время программирования от 0 до 5 баллов*. 
-						Где за 0 баллов принято ощущение полной неработоспособности, а за 5 баллов принято ощущение максимальной продуктивности.
-					</p>
-					<br style="margin-bottom: 40px">						
-
-					<p style="font-size: 0.8em">
-						* Все собранные данные будут использованы как обезличенные и только для публикации в журнале входящем в список научных журналов ВАК.
-					</p>
-					<p style="font-size: 0.8em">
-						** Исходный код данного сайта расположен на: <a href="https://github.com/sinitcin/sci_questionnaire">github</a><br>
-					</p>
-					<p style="font-size: 0.8em">
-						*** В опросе уже приняли участие: {{participants}}. 
-					</p>
-				</div>
-				<!-- Конец левого блока -->
-				<!-- Правый блок -->
 				<div class="column">
 					<form action="/processing" id="main_form" method="post">
-						<input type="number" class="textbox" name="age" value="" min="0" max="120" placeholder="Ваш Возраст:" required/>
-						<input type="text" class="textbox" name="specialization" placeholder="Ваша должность:" required/>		
-						<select name="work_type" class="textbox" style="color:gray" onchange="this.style.color='black'" required/>
-							<option value="" style="display:none" selected="selected">Выберите тип занятости:</option>
+						Ваш Возраст:
+						<input type="number" class="textbox" name="age" value="" min="0" max="120" required/>
+						Ваша должность:
+						<input type="text" class="textbox" name="specialization" required/>		
+						Выберите тип занятости:
+						<select name="work_type" class="textbox" style="color:gray" onchange="this.style.color='black'" required/>						
+							<option value="" style="display:none" selected="selected">Полный день или свободный график:</option>
 							<option value="full_day">Полный день</option>
 							<option value="free_day">Свободный график</option>
 						</select>
-						<input type="number" class="textbox" name="active_work_hours" min="0" max="24" placeholder="Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:" required/>
-						<input type="email" class="textbox" name="email" placeholder="Если Вы хотите получить копию статьи, то укажите Вашу почту:"/>
+						Суммарно, какое количество часов в день Вы считаете себя наиболее продуктивным:
+						<input type="number" class="textbox" name="active_work_hours" min="0" max="24" required/>
+						Если Вы хотите получить копию статьи, то укажите Вашу почту (не обязательно):
+						<input type="email" class="textbox" name="email"/>
 						<input type="hidden" name="points" id="points"/>
 						<span style="color:red;padding-bottom:20px;font-size: 0.8em"> &larr; График нужно заполнить! Читайте текст слева</span>
 						<br>
 						<div id="chart1" style="height: 220px; width: 100%; margin-left: 5px; margin-bottom: 5px; margin-top: 5px;"></div>
-						<input type="submit" name="submit" class="button" value="Отправить"/>
+						<input type="submit" name="submit" class="button" value="Перейти ко второму этапу"/>
 					</form>
 				</div>
-				<!-- Конец правого блока -->
-			</div>
+			</div>					
+			
+			<br style="margin-bottom: 40px">						
+
+			<p align=center style="font-size: 0.8em">
+			* Все собранные данные будут использованы как обезличенные и только для публикации в журнале входящем в список научных журналов ВАК.
+			</p>
+			<p align=center style="font-size: 0.8em">
+			** Исходный код данного сайта расположен на: <a href="https://github.com/sinitcin/sci_questionnaire">github</a><br>
+			</p>
+			<p align=center style="font-size: 0.8em">
+			*** В опросе уже приняли участие: {{participants}}. 
+			</p>
 		</div>
 
 		<script language="javascript" type="text/javascript">

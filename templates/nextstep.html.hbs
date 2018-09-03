@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Опрос</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jqplot/jquery.jqplot.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.barRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.cursor.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.highlighter.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.dragable.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.logAxisRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasTextRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+	<script type="text/javascript" src="jqplot/plugins/jqplot.canvasAxisTickRenderer.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
+</head>
+<body>
+		<div class="container">
+			<div class="main clearfix">
+				<div class="column">
+					<form action="/processing" id="main_form" method="post">
+					По оси абсцисс (X) указано время в формате "Часы:Минуты" и установлены 24 точки, которые соответствуют каждому часу в сутках. Каждую точку можно двигать по оси ординат (Y). Во всплывающей подсказке будет указано, какому количеству баллов равняется выбранная позиция точки. 
+Пожалуйста, оцените свою продуктивность во время программирования от 0 до 5 баллов*. Где за 0 баллов принято ощущение полной неработоспособности, а за 5 баллов принято ощущение максимальной продуктивности.
+						<div id="chart1" style="height: 220px; width: 100%; margin-left: 5px; margin-bottom: 5px; margin-top: 5px;"></div>
+						<input type="submit" name="submit" class="button" value="Перейти ко второму этапу"/>
+					</form>
+				</div>
+			</div>					
+			
+			<br style="margin-bottom: 40px">						
+
+			<p align=center style="font-size: 0.8em">
+			* Все собранные данные будут использованы как обезличенные и только для публикации в журнале входящем в список научных журналов ВАК.
+			</p>
+			<p align=center style="font-size: 0.8em">
+			** Исходный код данного сайта расположен на: <a href="https://github.com/sinitcin/sci_questionnaire">github</a><br>
+			</p>
+			<p align=center style="font-size: 0.8em">
+			*** В опросе уже приняли участие: {{participants}}. 
+			</p>
+		</div>
+
+		<script language="javascript" type="text/javascript">
+
+		    $(document).ready(function () {
+				
+				$.jqplot.config.enablePlugins = true;
+			
+				window.s1 = [
+							['00:00',0],['01:00',0],['02:00',0],['03:00',0],['04:00',0],['05:00',0],['06:00',0],
+							['07:00',0],['08:00',0],['09:00',0],['10:00',0],['11:00',0],['12:00',0],['13:00',0],
+							['14:00',0],['15:00',0],['16:00',0],['17:00',0],['18:00',0],['19:00',0],['20:00',0],
+							['21:00',0],['22:00',0],['23:00',0]
+							];
+			
+				window.plot1 = $.jqplot('chart1',[s1],{
+				axes: {
+					xaxis: {
+						tickOptions: {
+							formatString: '%H:%M',
+							angle: -30
+						},
+						tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+						labelOptions: {
+							fontFamily:'Helvetica',
+							fontSize: '14pt'
+						},
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						renderer: $.jqplot.DateAxisRenderer,
+						numberTicks: 12,
+					},
+					yaxis: {
+						tickOptions: {
+							formatString: '%d',
+							angle: 30
+						},
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+						numberTicks: 5,
+						min:-0.2,
+						max:5.2,
+						ticks:[0, 1, 2, 3, 4, 5]
+					}, 
+					seriesDefaults: {
+						showMarker: false,
+						pointLabels: { show: true },
+						rendererOptions: {smooth: true}
+					}
+				},
+				series: [{
+					dragable: {
+						constrainTo: 'y',
+						stickyY: true
+					},
+					isDragable: true
+					}],
+				highlighter: {
+					sizeAdjust: 10,
+					tooltipLocation: 'n',
+					tooltipAxes: 'y',
+					tooltipFormatString: '<b><i><span style="color:red;">Значение: </span></i></b> %d',
+					useAxesFormatters: false
+				},
+				cursor: {
+					show: true
+				}
+				});
+			});
+
+			$('#main_form').submit(function () {
+				$("#points").val(JSON.stringify(window.s1));
+			});
+		</script>
+
+</body>
+</html>

@@ -93,6 +93,24 @@ fn index() -> Template {
     Template::render("index", &context)
 }
 
+#[get("/nextstep")]
+fn nextstep() -> Template {
+
+    let count = format!("{}", database::number_of_participants());
+    let end_with = match count.chars().last() {
+        Some('2') | 
+        Some('3') | 
+        Some('4') => "человека",
+        _ => "человек",
+    };
+
+    let context = TemplateContext {
+        participants: format!("{} {}", count, end_with) 
+    };
+
+    Template::render("nextstep", &context)
+}
+
 #[get("/<file..>")]
 fn files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("static/").join(file)).ok()
@@ -131,7 +149,7 @@ fn not_found(_req: &Request) -> io::Result<NamedFile> {
 fn main() {
     database::create();
     rocket::ignite()
-        .mount("/", routes![index, files, processing, thanks])
+        .mount("/", routes![index, nextstep, processing, files, thanks])
         .attach(Template::fairing())
         .catch(catchers![not_found])
         .launch();
